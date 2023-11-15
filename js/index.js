@@ -99,5 +99,16 @@ function loadCookies() {
         }
     }
 }
+window.addEventListener('load', () => {
+    loadCookies();
+    updateActivityTypeOptions();
+    const activityTypeSelect = document.querySelector('#activityTypeSelect');
+    const cookies = document.cookie.split(';');
+    const activityTypeCookie = cookies.find(cookie => cookie.trim().startsWith('activityType='));
+    if (activityTypeCookie) {
+        const activityType = activityTypeCookie.split('=')[1];
+        activityTypeSelect.value = activityType;
+    }
+});
 
 window.addEventListener('load', loadCookies);
