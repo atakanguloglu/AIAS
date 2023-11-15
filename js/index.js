@@ -3,9 +3,6 @@ function updateActivityTypeOptions() {
     const activityTypeSelect = document.querySelector('#activityTypeSelect');
     const selectedAcademicActivityType = academicActivityTypeSelect.value;
 
-    // Clear previous options
-    activityTypeSelect.innerHTML = '';
-
     // Add new options based on selected academic activity type
     switch (selectedAcademicActivityType) {
         case 'Yayın':
@@ -38,32 +35,32 @@ function updateActivityTypeOptions() {
         case 'Sergi':
             activityTypeSelect.innerHTML = `
                 <option value="">Seçiniz...</option>
-                <option value="3.1.a - Özgün yurtdışı bireysel etkinlik">3.1.a</option>
-                <option value="3.2.a - Özgün yurtiçi bireysel etkinlik">3.2.a</option>
-                <option value="3.3.a - Özgün yurtdışı grup/karma/toplu etkinlik">3.3.a</option>
-                <option value="3.4.a - Özgün yurtiçi grup/karma/toplu etkinlik">3.4.a</option>
+                <option value="3.1.a">3.1.a - Özgün yurtdışı bireysel etkinlik</option>
+                <option value="3.2.a">3.2.a - Özgün yurtiçi bireysel etkinlik></option>
+                <option value="3.3.a">3.3.a - Özgün yurtdışı grup/karma/toplu etkinlik></option>
+                <option value="3.4.a">3.4.a - Özgün yurtiçi grup/karma/toplu etkinlik</option>
             `;
             break;
         case 'Patent':
             activityTypeSelect.innerHTML = `
                 <option value="">Seçiniz...</option>
-                <option value="4.1.a - Uluslararası patent">4.1.a- Uluslararası patent</option>
-                <option value="4.2.a - Ulusal patent">4.2.a-Ulusal patent</option>
-                <option value="4.3.a - Uluslararası Faydalı Model">4.3.a- Uluslararası Faydalı Model</option>
-                <option value="4.4.a - Ulusal Faydalı Model">4.4.a- Ulusal Faydalı Model</option>
+                <option value="4.1.a">4.1.a - Uluslararası patent</option>
+                <option value="4.2.a">4.2.a - Ulusal patent</option>
+                <option value="4.3.a">4.3.a - Uluslararası Faydalı Model</option>
+                <option value="4.4.a">4.4.a - Ulusal Faydalı Model</option>
             `;
             break;
         case 'Atıf':
             activityTypeSelect.innerHTML = `
                 <option value="">Seçiniz...</option>
-                <option value="5.1.a - SCI, SCI-Expanded, SSCI ve AHCI kapsamındaki dergilerde yayımlanmış makalelerde atıf">5.1.a</option>
-                <option value="5.2.a - Alan endeksleri (varsa) kapsamındaki dergilerde yayımlanmış makalelerde atıf">5.2.a</option>
-                <option value="5.3.a - Diğer uluslararası hakemli dergilerde yayımlanmış makalelerde atıf">5.3.a</option>
-                <option value="5.4.a - ULAKBİM tarafından taranan ulusal hakemli dergilerde yayımlanmış makalelerde atıf">5.4.a</option>
-                <option value="5.5.a - Tanınmış uluslararası yayınevleri tarafından yayımlanmış özgün bilimsel kitapta atıf">5.5.a</option>
-                <option value="5.6.a - Tanınmış ulusal yayınevleri tarafından yayımlanmış özgün bilimsel kitapta atıf">5.6.a</option>
-                <option value="5.7.a - Güzel sanatlardaki eserlerin uluslararası kaynak veya yayın organlarında yer alması veya gösterime ya da dinletime girmesi">5.7.a</option>
-                <option value="5.8.a - Güzel sanatlardaki eserlerin ulusal kaynak veya yayın organlarında yer alması veya gösterime ya da dinletime girmesi">5.8.a</option>
+                <option value="5.1.a">5.1.a - SCI, SCI-Expanded, SSCI ve AHCI kapsamındaki dergilerde yayımlanmış makalelerde atıf</option>
+                <option value="5.2.a">5.2.a - Alan endeksleri (varsa) kapsamındaki dergilerde yayımlanmış makalelerde atıf</option>
+                <option value="5.3.a">5.3.a - Diğer uluslararası hakemli dergilerde yayımlanmış makalelerde atı</option>
+                <option value="5.4.a">5.4.a - ULAKBİM tarafından taranan ulusal hakemli dergilerde yayımlanmış makalelerde atıf</option>
+                <option value="5.5.a">5.5.a - Tanınmış uluslararası yayınevleri tarafından yayımlanmış özgün bilimsel kitapta atıf</option>
+                <option value="5.6.a">5.6.a - Tanınmış ulusal yayınevleri tarafından yayımlanmış özgün bilimsel kitapta atıf</option>
+                <option value="5.7.a">5.7.a - Güzel sanatlardaki eserlerin uluslararası kaynak veya yayın organlarında yer alması veya gösterime ya da dinletime girmesi</option>
+                <option value="5.8.a">5.8.a - Güzel sanatlardaki eserlerin ulusal kaynak veya yayın organlarında yer alması veya gösterime ya da dinletime girmesi</option>
                 `;
             break;
         default:
@@ -84,6 +81,10 @@ function saveForm() {
     // Handle successful response from server
     console.log("Form data saved to cookies");
 }
+
+const form = document.getElementById("applicationForm");
+form.addEventListener('input', saveForm);
+
 function loadCookies() {
     const cookies = document.cookie.split(';');
     const formDataCookie = cookies.find(cookie => cookie.trim().startsWith('formData='));
