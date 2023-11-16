@@ -72,21 +72,19 @@ function saveForm() {
     for (const [key, value] of formData.entries()) {
         data[key] = value;
     }
-    // Store data in cookies
-    document.cookie = `formData=${JSON.stringify(data)}; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
+    // Store data in local storage
+    localStorage.setItem('formData', JSON.stringify(data));
 
     // Handle successful response from server
-    console.log("Form data saved to cookies");
+    console.log("Form data saved to local storage");
 }
 
 const form = document.getElementById("applicationForm");
 form.addEventListener('input', saveForm);
 
-function loadCookies() {
-    const cookies = document.cookie.split(';');
-    const formDataCookie = cookies.find(cookie => cookie.trim().startsWith('formData='));
-    if (formDataCookie) {
-        const formData = JSON.parse(formDataCookie.split('=')[1]);
+function loadLocalStorage() {
+    const formData = JSON.parse(localStorage.getItem('formData'));
+    if (formData) {
         const form = document.getElementById("applicationForm");
         for (const [key, value] of Object.entries(formData)) {
             const input = form.querySelector(`[name="${key}"]`);
@@ -100,20 +98,18 @@ function loadCookies() {
 function clearForm() {
     const form = document.getElementById("applicationForm");
     form.reset();
-    document.cookie = "formData=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    console.log("Form data cookie cleared");
+    localStorage.removeItem('formData');
+    console.log("Form data local storage cleared");
 }
 
 window.addEventListener('load', () => {
-    loadCookies();
+    loadLocalStorage();
     updateActivityTypeOptions();
     const activityTypeSelect = document.querySelector('#activityTypeSelect');
-    const cookies = document.cookie.split(';');
-    const activityTypeCookie = cookies.find(cookie => cookie.trim().startsWith('activityType='));
-    if (activityTypeCookie) {
-        const activityType = activityTypeCookie.split('=')[1];
+    const activityType = localStorage.getItem('activityType');
+    if (activityType) {
         activityTypeSelect.value = activityType;
     }
 });
 
-window.addEventListener('load', loadCookies);
+window.addEventListener('load', loadLocalStorage);
