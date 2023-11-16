@@ -101,8 +101,29 @@ function clearForm() {
     localStorage.removeItem('formData');
     console.log("Form data local storage cleared");
 }
-function showModal() {
+function showModal(event) {
     event.preventDefault();
+
+    var formData = 
+    {
+        name: $('input[name="name"]').val(),
+        surname: $('input[name="surname"]').val(),
+        academicTitle: $('select[name="academicTitle"]').val(),
+        faculty: $('select[name="faculty"]').val(),
+        department: $('input[name="department"]').val(),
+        basicArea: $('input[name="basicArea"]').val(),
+        scientificArea: $('input[name="scientificArea"]').val(),
+        academicActivityType: $('select[name="academicActivityType"]').val(),
+        activityType: $('select[name="activityType"]').val(),
+        workName: $('input[name="workName"]').val(),
+    };
+
+    for (var key in formData) {
+        if (formData[key] === "") {
+            alert("Lütfen bütün bilgileri doldurunuz.");
+            return;
+        }
+    }
 
     $('#successModal').modal('show');
 }
