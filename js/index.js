@@ -93,7 +93,7 @@ function loadLocalStorage() {
             }
         }
     }
-}
+}   
 
 function clearForm() {
     const form = document.getElementById("applicationForm");
@@ -107,7 +107,6 @@ function showModal() {
     $('#successModal').modal('show');
 }
 
-
 window.addEventListener('load', () => {
     loadLocalStorage();
     updateActivityTypeOptions();
@@ -117,7 +116,5 @@ window.addEventListener('load', () => {
         activityTypeSelect.value = activityType;
     }
 });
-
-
 
 window.addEventListener('load', loadLocalStorage);
