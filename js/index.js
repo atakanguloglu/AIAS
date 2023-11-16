@@ -101,6 +101,12 @@ function clearForm() {
     localStorage.removeItem('formData');
     console.log("Form data local storage cleared");
 }
+function showModal() {
+    event.preventDefault();
+
+    $('#successModal').modal('show');
+}
+
 
 window.addEventListener('load', () => {
     loadLocalStorage();
@@ -111,5 +117,7 @@ window.addEventListener('load', () => {
         activityTypeSelect.value = activityType;
     }
 });
+
+
 
 window.addEventListener('load', loadLocalStorage);
