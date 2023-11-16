@@ -96,6 +96,14 @@ function loadCookies() {
         }
     }
 }
+
+function clearForm() {
+    const form = document.getElementById("applicationForm");
+    form.reset();
+    document.cookie = "formData=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    console.log("Form data cookie cleared");
+}
+
 window.addEventListener('load', () => {
     loadCookies();
     updateActivityTypeOptions();
