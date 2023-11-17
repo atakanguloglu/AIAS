@@ -118,14 +118,46 @@ function showModal(event) {
         workName: $('input[name="workName"]').val(),
     };
 
-    for (var key in formData) {
-        if (formData[key] === "") {
-            alert("Lütfen bütün bilgileri doldurunuz.");
-            return;
-        }
+    var missingFields = checkFields(formData);
+    if (missingFields.length > 0) {
+        var missingFieldsElements = [];
+        missingFields.forEach(function(field, index) {
+            var inputElement = $('input[name="' + field + '"]');
+            var selectElement = $('select[name="' + field + '"]');
+            if (inputElement.length > 0) {
+                missingFieldsElements.push(inputElement);
+            } else if (selectElement.length > 0) {
+                missingFieldsElements.push(selectElement);
+            }
+            inputElement.addClass('is-invalid').on('input', function() {
+                if ($(this).val() !== '') {
+                    $(this).removeClass('is-invalid');
+                }
+            });
+            selectElement.addClass('is-invalid').on('change', function() {
+                if ($(this).val() !== '') {
+                    $(this).removeClass('is-invalid');
+                }
+            });
+        });
+        missingFieldsElements[0][0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(function() {
+            $('#errorModal').modal('show');
+        }, 800);
+        return;
     }
 
     $('#successModal').modal('show');
+}
+
+function checkFields(formData) {
+    var missingFields = [];
+    for (var key in formData) {
+        if (formData[key] === "") {
+            missingFields.push(key);
+        }
+    }
+    return missingFields;
 }
 
 window.addEventListener('load', () => {
