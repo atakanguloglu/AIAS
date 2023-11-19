@@ -108,6 +108,7 @@ function showModal(event) {
     {
         name: $('input[name="name"]').val(),
         surname: $('input[name="surname"]').val(),
+        email: $('input[name="email"]').val(),
         academicTitle: $('select[name="academicTitle"]').val(),
         faculty: $('select[name="faculty"]').val(),
         department: $('input[name="department"]').val(),
@@ -160,6 +161,12 @@ function checkFields(formData) {
     return missingFields;
 }
 
+function openPage(pageURL) {
+    event.preventDefault();
+    window.location.href = pageURL;
+}
+
+
 window.addEventListener('load', () => {
     loadLocalStorage();
     updateActivityTypeOptions();
@@ -169,5 +176,7 @@ window.addEventListener('load', () => {
         activityTypeSelect.value = activityType;
     }
 });
+
+
 
 window.addEventListener('load', loadLocalStorage);
