@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="tr">
 
 <head>
@@ -28,6 +29,7 @@
 </head>
 
 <body class="bg-light p-4" data-new-gr-c-s-check-loaded="14.1137.0" data-gr-ext-installed="">
+
     <div class="d-none loader d-flex align-items-center justify-content-center position-fixed w-100 h-100"
         style="top:0; left:0; z-index:66">
         <div class="line-scale-pulse-out">
@@ -44,7 +46,7 @@
 
     <div class="responseDiv"></div>
 
-    <form id="applicationForm" class="mb-4">
+    <form id="applicationForm" action="create_table.php" method="POST" class="mb-4">
         <div class="row g-0">
             <div class="col-lg-5 m-auto">
                 <div class="card shadow p-4">
@@ -78,7 +80,7 @@
                         <div class="col-12 mt-4">
                             <label class="fw-semibold">Akademik Kadro Ünvanı</label>
 
-                            <select class="form-control" name="academicTitle">
+                            <select class="form-control" name="title">
                                 <option value="">Seçiniz...</option>
                                 <option value="Prof. Dr.">Prof. Dr.</option>
                                 <option value="Doç. Dr.">Doç. Dr.</option>
@@ -109,13 +111,13 @@
                         <div class="col-12 mt-3 ">
                             <label class="fw-semibold">Temel Alan</label>
                             <input class="form-control" type="text" placeholder="Temel Alanınızı girin"
-                                name="basicArea">
+                                name="basic_field">
                         </div>
 
                         <div class="col-12 mt-3">
                             <label class="fw-semibold">Bilimsel Alan</label>
                             <input class="form-control" type="text" placeholder="Bilimsel Alanınızı girin"
-                                name="scientificArea">
+                                name="scientific_field">
                             <small class="form-text text-muted">*En Yakın Bilim Alanını Yazınız. ÜAK Doçentlik temel
                                 alanları dikkate alınacaktır.
                             </small>
@@ -123,7 +125,7 @@
 
                         <div class="col-12 mt-5">
                             <label class="fw-semibold">Akademik Faaliyet Türü</label>
-                            <select class="form-control" name="academicActivityType"
+                            <select class="form-control" name="academic_activity_type"
                                 onchange="updateActivityTypeOptions()">
                                 <option value="">Seçiniz...</option>
                                 <option value="Yayın">Yayın</option>
@@ -136,31 +138,38 @@
 
                         <div class="col-12 mt-3">
                             <label class="fw-semibold">Faaliyet</label>
-                            <select class="form-control" name="activityType" id="activityTypeSelect">
+                            <select class="form-control" name="activity" id="activityTypeSelect">
                             </select>
                         </div>
 
                         <div class="col-12 mt-3">
                             <label class="fw-semibold">Eser Adı</label>
-                            <input class="form-control" type="text" name="workName">
+                            <input class="form-control" type="text" name="work_name">
                             </select>
                         </div>
 
                         <div class="col-12 mt-5">
-                            <label class="fw-semibold">Katsayı</label>
-                            <input class="form-control" type="text" name="k" disabled>
+                            <label class="fw-semibold">Kişi sayısı</label>
+                            <input class="form-control" type="number" min="1" max="10" name="persons" >
                         </div>
+                        <!-- <div class="col-12 mt-5">
+                            <label class="fw-semibold">Katsayı</label>
+                            <input class="form-control" type="text" name="coefficient" disabled>
+                        </div> -->
 
                         <div class="col-12 mt-4 text-center">
-                            <button type="submit" onclick="showModal(event)" class="btn btn-success-2 px-5 fw-semibold ms-3">Gönder</button>
+                            <input type="submit"  class="btn btn-success-2 px-5 fw-semibold ms-3" name="submit_btn">
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-primary position-fixed bottom-0 start-0 m-3 text-start" style="background-color: rgb(220, 53, 69); border: 2px solid rgb(220, 53, 69);" onclick="openPage('login.html')">Giriş Yap</button>
+                <!-- <button class="btn btn-primary position-fixed bottom-0 start-0 m-3 text-start" style="background-color: rgb(220, 53, 69); border: 2px solid rgb(220, 53, 69);" onclick="openPage('login.html')">Giriş Yap</button> -->
             </div>
             <div class="text-center text-black opacity-8 mt-3">Copyright © İstanbul Nişantaşı Üniversitesi 2023</div>
         </div>
     </form>
+    <?php
+
+    ?>
     <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
