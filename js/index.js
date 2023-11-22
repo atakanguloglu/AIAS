@@ -161,14 +161,14 @@ function showModal(event) {
     name: $('input[name="name"]').val(),
     surname: $('input[name="surname"]').val(),
     email: $('input[name="email"]').val(),
-    academicTitle: $('select[name="academicTitle"]').val(),
+    academicTitle: $('select[name="title"]').val(),
     faculty: $('select[name="faculty"]').val(),
     department: $('input[name="department"]').val(),
-    basicArea: $('input[name="basicArea"]').val(),
-    scientificArea: $('input[name="scientificArea"]').val(),
-    academicActivityType: $('select[name="academicActivityType"]').val(),
-    activityType: $('select[name="activityType"]').val(),
-    workName: $('input[name="workName"]').val(),
+    basicArea: $('input[name="basic_field"]').val(),
+    scientificArea: $('input[name="scientific_field"]').val(),
+    academicActivityType: $('select[name="academic_activity_type"]').val(),
+    activityType: $('select[name="activity"]').val(),
+    workName: $('input[name="work_name"]').val(),
   };
 
   var missingFields = checkFields(formData);

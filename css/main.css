@@ -160,3 +160,7 @@
 .fs-16px {
   font-size: 16px;
 }
+
+.odd td {
+  background-color: rgb(154, 0, 46, 0.125) !important;
+}

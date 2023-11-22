@@ -1,112 +1,176 @@
 <?php
 
-// K katsayısını hesaplayan fonksiyon
-function calculateKValue($title) {
-    switch ($title) {
-        case "Prof. Dr.":
-            return 1;
-        case "Doç. Dr.":
-            return 0.8;
-        case "Dr. Öğr. Üyesi.":
-            return 0.6;
-        case "Öğr. Gör.":
-            return 0.4;
-        case "Arş. Gör.":
-            return 0.2;
+function calculateCofficient($persons)
+{
+    // Database connection details
+    $servername = "localhost"; // Change this if your database is on a different server
+    $username = "root"; // Replace with your MySQL username
+    $password = ""; // Replace with your MySQL password
+    $dbname = "aias"; // Replace with your database name
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    // Check if the katsayı table exists
+    $tableCheckQuery = "SHOW TABLES LIKE 'katsayı'";
+    $tableResult = $conn->query($tableCheckQuery);
+
+    if ($tableResult->num_rows == 0) {
+        // Table does not exist, create it
+        $createTableQuery = "CREATE TABLE katsayı (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        value DECIMAL(10, 2)
+    )";
+        if ($conn->query($createTableQuery) === TRUE) {
+            // Table created successfully, insert values
+            $insertValuesQuery = "INSERT INTO katsayı (value) VALUES (1), (0.6), (0.4), (0.3)";
+            if ($conn->query($insertValuesQuery) === TRUE) {
+                echo "Values inserted into katsayı table successfully.";
+            } else {
+                echo "Error inserting values: " . $conn->error;
+            }
+        } else {
+            echo "Error creating table: " . $conn->error;
+        }
+    } else {
+        echo "Table katsayı already exists.";
+    }
+    // Fetch coefficient values from the database
+    $sql = "SELECT value FROM katsayı WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $coefficients = [1, 0.6, 0.4, 0.3]; // Default coefficients
+
+    if ($stmt) {
+        for ($i = 1; $i <= 4; $i++) {
+            $stmt->bind_param("i", $i);
+            $stmt->execute();
+            $stmt->bind_result($value);
+            $stmt->fetch();
+            $coefficients[$i - 1] = $value;
+        }
+        $stmt->close();
+    }
+
+
+    switch ($persons) {
+        case "1":
+            return $coefficients[0];
+        case "2":
+            return $coefficients[1];
+        case "3":
+            return $coefficients[2];
+        case "4":
+            return $coefficients[3];
         default:
-            return 0;
+            return 1 / $persons;
     }
 }
 
-// Puanı hesaplayan fonksiyon
-function calculateScore($activity, $coefficient, $incentive_point) {
-    switch ($activity) {
+function calculateIncentivePoint($academic_activity_type, $activity, $coefficient)
+{
+    switch ($academic_activity_type) {
         case "Yayın":
-            $score = calculatePublicationScoreByPersons($coefficient, $incentive_point);
-            break;
+            switch ($activity) {
+                case "1.1.a":
+                    return $coefficient * 125;
+                case "1.1.b":
+                    return $coefficient * 100;
+                case "1.1.c":
+                    return $coefficient * 85;
+                case "1.1.d":
+                    return $coefficient * 65;
+                case "1.2.a":
+                    return $coefficient * 65;
+                case "1.2.b":
+                    return $coefficient * 60;
+                case "1.2.c":
+                    return $coefficient * 55;
+                case "1.2.d":
+                    return $coefficient * 50;
+                case "1.3.a":
+                    return $coefficient * 50;
+                case "1.4.a":
+                    return $coefficient * 40;
+                case "1.5.a":
+                    return $coefficient * 30;
+                case "1.6.a":
+                    return $coefficient * 20;
+                case "1.7.a":
+                    return $coefficient * 40;
+                case "1.8.a":
+                    return $coefficient * 10;
+                case "1.9.a":
+                    return $coefficient * 20;
+                case "1.10.a":
+                    return $coefficient * 10;
+                // Add more subcategories for "YAYIN" if needed
+                default:
+                    return 0;
+            }
+
         case "Tasarım":
+            switch ($activity) {
+                case "2.1.a":
+                    return $coefficient * 20;
+                // Add more subcategories as needed for 2.TASARIM
+                default:
+                    return 0;
+            }
+
         case "Sergi":
-            $score = calculateDesignOrExhibitionScore($activity, $coefficient);
-            break;
+            switch ($activity) {
+                case "3.1.a":
+                    return $coefficient * 40;
+                case "3.2.a":
+                    return $coefficient * 20;
+                case "3.3.a":
+                    return $coefficient * 20;
+                case "3.4.a":
+                    return $coefficient * 15;
+                // Add more subcategories as needed for 3.SERGİ
+                default:
+                    return 0;
+            }
+
         case "Patent":
-            // Patent puanı hesaplayan fonksiyon buraya eklenecek
-            break;
+            switch ($activity) {
+                case "4.1.a":
+                    return $coefficient * 120;
+                case "4.2.a":
+                    return $coefficient * 100;
+                case "4.3.a":
+                    return $coefficient * 80;
+                case "4.4.a":
+                    return $coefficient * 60;
+                // Add more subcategories as needed for 4.PATENT
+                default:
+                    return 0;
+            }
+
         case "Atıf":
-            // Atıf puanı hesaplayan fonksiyon buraya eklenecek
-            break;
-        default:
-            $score = 0;
-            break;
-    }
-    return $score;
-}
+            switch ($activity) {
+                case "5.1.a":
+                    return $coefficient * 1;
+                case "5.2.a":
+                    return $coefficient * (3 / 4);
+                case "5.3.a":
+                    return $coefficient * (1 / 2);
+                case "5.4.a":
+                    return $coefficient * (1 / 4);
+                case "5.5.a":
+                    return $coefficient * 1;
+                case "5.6.a":
+                    return $coefficient * (3 / 4);
+                case "5.7.a":
+                    return $coefficient * (1 / 2);
+                case "5.8.a":
+                    return $coefficient * (1 / 4);
+                // Add more subcategories for "ATIF" if needed
+                default:
+                    return 0;
+            }
 
-// Yayın puanını kişi sayısına göre hesaplayan fonksiyon
-function calculatePublicationScoreByPersons($coefficient, $persons) {
-    switch ($incentive_point) {
-        case 1:
-            $score = $coefficient * 1;
-            break;
-        case 2:
-            $score = $coefficient * 0.6;
-            break;
-        case 3:
-            $score = $coefficient * 0.4;
-            break;
-        case 4:
-            $score = $coefficient * 0.3;
-            break;
         default:
-            $score = $coefficient / $persons;
-            break;
-    }
-    return $score;
-}
-
-// Tasarım ve Sergi puanını hesaplayan fonksiyon
-function calculateDesignOrExhibitionScore($activity, $coefficient) {
-    switch ($activity) {
-        case "Tasarım":
-            return $coefficient * 20;
-        case "Sergi":
-            return $coefficient * 40;
-        default:
-            return 0;
-    }
-}
-
-function calculatePatentScore($academic_activity_type, $coefficient) {
-    switch ($academic_activity_type) {
-        case "Uluslararası Patent":
-            return $coefficient * 120;
-        case "Ulusal Patent":
-            return $coefficient * 100;
-        case "Uluslararası Faydalı Model":
-            return $coefficient * 80;
-        case "Ulusal Faydalı Model":
-            return $coefficient * 60;
-        default:
-            return 0;
-    }
-}
-
-
-function calculateCitationScore($academic_activity_type, $coefficient) {
-    switch ($academic_activity_type) {
-        case "SCI":
-        case "SCI-Expanded":
-        case "SSCI":
-        case "AHCI":
-            return $coefficient * 1;
-        case "Alan Endeksleri":
-            return $coefficient * (3/4);
-        case "Diğer Uluslararası Dergiler":
-            return $coefficient * (1/2);
-        case "ULAKBİM":
-            return $coefficient * (1/4);
-        // Diğer durumlar için gerekli işlemler burada eklenecek
-        default:
-            return 0;
+            return 0; // Return 0 if activity type doesn't match any case
     }
 }
 
@@ -159,40 +223,39 @@ if ($table_result->num_rows == 0) {
     }
 }
 
-    
-    // Insert data from POST request into the table
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
-        $name = $_POST["name"];
-        $surname = $_POST["surname"];
-        $email = $_POST["email"];
-        $title = $_POST["title"];
-        $faculty = $_POST["faculty"];
-        $department = $_POST["department"];
-        $basic_field = $_POST["basic_field"];
-        $scientific_field = $_POST["scientific_field"];
-        $academic_activity_type = $_POST["academic_activity_type"];
-        $activity = $_POST["activity"];
-        $work_name = $_POST["work_name"];
-        $persons = $_POST["persons"];
-        // $coefficient = $_POST["coefficient"];
-        // $incentive_point = $_POST["incentive_point"];
 
-        // K katsayısını hesaplayın
-        $coefficient = calculateKValue($title);
+// Insert data from POST request into the table
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-        // Puanı hesaplayın
-        $incentive_point = calculateScore($activity, $coefficient, $persons);
+    $name = $_POST["name"];
+    $surname = $_POST["surname"];
+    $email = $_POST["email"];
+    $title = $_POST["title"];
+    $faculty = $_POST["faculty"];
+    $department = $_POST["department"];
+    $basic_field = $_POST["basic_field"];
+    $scientific_field = $_POST["scientific_field"];
+    $academic_activity_type = $_POST["academic_activity_type"];
+    $activity = $_POST["activity"];
+    $work_name = $_POST["work_name"];
+    $persons = $_POST["persons"];
 
-        // SQL query to insert data into the table
-        $insert_query = "INSERT INTO $table_name (name, surname, email, title, faculty, department, basic_field, scientific_field, academic_activity_type, activity, work_name, persons, coefficient, incentive_point ) VALUES ('$name', '$surname', '$email', '$title', '$faculty', '$department', '$basic_field', '$scientific_field', '$academic_activity_type', '$activity', '$work_name', '$persons', '$coefficient', '$incentive_point')";
+    // Katsayısının hesaplanması
+    $coefficient = calculateCofficient($persons);
 
-        if ($conn->query($insert_query) === TRUE) {
-            echo "Data inserted successfully";
-        } else {
-            echo "Error inserting data: " . $conn->error;
-        }
+    // Teşvik puanı hesaplama
+    $incentive_point = calculateIncentivePoint($academic_activity_type, $activity, $coefficient);
+
+    // SQL query to insert data into the table
+    $insert_query = "INSERT INTO $table_name (name, surname, email, title, faculty, department, basic_field, scientific_field, academic_activity_type, activity, work_name, persons, coefficient, incentive_point ) VALUES ('$name', '$surname', '$email', '$title', '$faculty', '$department', '$basic_field', '$scientific_field', '$academic_activity_type', '$activity', '$work_name', '$persons', '$coefficient', '$incentive_point')";
+
+    if ($conn->query($insert_query) === TRUE) {
+        // echo "Data inserted successfully";
+        header("Location: panel.php");
+    } else {
+        echo "Error inserting data: " . $conn->error;
     }
+}
 
 
 // Close the connection

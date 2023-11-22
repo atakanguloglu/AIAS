@@ -1,3 +1,27 @@
+<?php
+session_start();
+
+// Check if the user is logged in
+if (isset($_SESSION['user_id'])) {
+    require_once "db_connection.php";
+
+    // Retrieve user details based on user_id stored in the session
+    $userId = $_SESSION['user_id'];
+    $sql = "SELECT * FROM users WHERE id = '$userId'";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows == 1) {
+        $user = $result->fetch_assoc();
+        // Display current user information
+        echo "Welcome, " . $user['phone'] . "<a href='signout.php'>Sign Out</a>"; // Display whatever user information you want
+    }
+} else {
+    // If user is not logged in, you can redirect to the signin page or perform other actions
+    header("Location: signin.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="tr">
 
@@ -30,22 +54,8 @@
 
 <body class="bg-light p-4" data-new-gr-c-s-check-loaded="14.1137.0" data-gr-ext-installed="">
 
-    <div class="d-none loader d-flex align-items-center justify-content-center position-fixed w-100 h-100"
-        style="top:0; left:0; z-index:66">
-        <div class="line-scale-pulse-out">
-            <div class="bg-white"></div>
-            <div class="bg-white"></div>
-            <div class="bg-white"></div>
-            <div class="bg-white"></div>
-            <div class="bg-white"></div>
-        </div>
-    </div>
-    <div class="d-none loader"
-        style="background:#0000009c; border:none; margin:0px; padding:0px; width:100%; height:100%; top:0px; left:0px; position:fixed; z-index:2">
-    </div>
-
     <div class="responseDiv"></div>
-
+    <div><a href="settings.php"><button class="btn btn-primary">Ayarlar</button></a></div>
     <form id="applicationForm" action="create_table.php" method="POST" class="mb-4">
         <div class="row g-0">
             <div class="col-lg-5 m-auto">
@@ -71,10 +81,11 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-12 mt-3">
                             <label class="fw-semibold">E-posta</label>
-                            <input class="form-control" type="email" placeholder="E-posta adresinizi girin" name="email">
+                            <input class="form-control" type="email" placeholder="E-posta adresinizi girin"
+                                name="email">
                         </div>
 
                         <div class="col-12 mt-4">
@@ -123,7 +134,7 @@
                             </small>
                         </div>
 
-                        <div class="col-12 mt-5">
+                        <div class="col-12 mt-3">
                             <label class="fw-semibold">Akademik Faaliyet Türü</label>
                             <select class="form-control" name="academic_activity_type"
                                 onchange="updateActivityTypeOptions()">
@@ -148,21 +159,21 @@
                             </select>
                         </div>
 
-                        <div class="col-12 mt-5">
+                        <div class="col-12 mt-3">
                             <label class="fw-semibold">Kişi sayısı</label>
-                            <input class="form-control" type="number" min="1" max="10" name="persons" >
+                            <select class="form-control" name="persons">
+                                <?php for ($i = 1; $i <= 10; $i++): ?>
+                                    <option value="<?php echo $i; ?>">
+                                        <?php echo $i; ?>
+                                    </option>
+                                <?php endfor; ?>
+                            </select>
                         </div>
-                        <!-- <div class="col-12 mt-5">
-                            <label class="fw-semibold">Katsayı</label>
-                            <input class="form-control" type="text" name="coefficient" disabled>
-                        </div> -->
-
-                        <div class="col-12 mt-4 text-center">
-                            <input type="submit"  class="btn btn-success-2 px-5 fw-semibold ms-3" name="submit_btn">
+                        <div class="col-12 my-4 text-center">
+                            <input type="submit" class="btn btn-success-2 px-5 fw-semibold ms-3" name="submit_btn">
                         </div>
                     </div>
                 </div>
-                <!-- <button class="btn btn-primary position-fixed bottom-0 start-0 m-3 text-start" style="background-color: rgb(220, 53, 69); border: 2px solid rgb(220, 53, 69);" onclick="openPage('login.html')">Giriş Yap</button> -->
             </div>
             <div class="text-center text-black opacity-8 mt-3">Copyright © İstanbul Nişantaşı Üniversitesi 2023</div>
         </div>
@@ -174,7 +185,8 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="successModalLabel">Teşekkür ederiz! Başvurunuz başarıyla alınmıştır!</h5>                      
+                    <h5 class="modal-title" id="successModalLabel">Teşekkür ederiz! Başvurunuz başarıyla alınmıştır!
+                    </h5>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
@@ -195,11 +207,12 @@
                 </div>
 
                 <div class="modal-footer justify-content-center bg-light">
-                    <button type="button" class="btn btn-sm bg-secondary text-white fw-semibold px-3" data-bs-dismiss="modal">KAPAT</button>
+                    <button type="button" class="btn btn-sm bg-secondary text-white fw-semibold px-3"
+                        data-bs-dismiss="modal">KAPAT</button>
                 </div>
             </div>
         </div>
-        
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
@@ -212,4 +225,6 @@
     <iframe height="1" width="1"
         style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;"></iframe>
 </body>
-</html><script src="js/index.js"></script>
+
+</html>
+<script src="js/index.js"></script>
