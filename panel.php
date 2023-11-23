@@ -55,13 +55,32 @@ $result = $conn->query($sql);
 </head>
 
 <body>
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <img src="img/logo-kucuk.png" width="140">
-            </div>
+
+<!--header section-->
+<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom font-black">
+        <div class="col-md-3 mb-2 mb-md-0">
+     <a href="#" class="d-inline-flex link-body-emphasis text-decoration-none ms-auto">
+                <img src="Istanbul_Nişantaşı_University_logo.png" alt="Logo" width="100" height="auto">
+            </a>
         </div>
-    </nav>
+  
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+          <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
+         
+        
+          <li><a href="#" class="nav-link px-2">FAQs</a></li>
+   
+        </ul>
+  
+        <div class="col-md-3 text-end">
+          <button type="button" class="btn btn-outline-primary me-2 btn-black">Login</button>
+          <button type="button" class="btn btn-primary btn-black">Sign-up</button>
+        </div>
+      </header>
+<!--End header section-->
+
+
+ <!-- Main Section -->
     <div class="container">
 
 
@@ -108,6 +127,29 @@ $result = $conn->query($sql);
 
 
     </div>
+ <!-- End Main Section -->
+
+    <!-- Footer Section -->
+    <section id="footer">
+        <div class="container">
+            <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+              <p class="col-md-4 mb-0 text-muted">© Istanbul Nişantaşı University</p>
+          
+              <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                <img src="Istanbul_Nişantaşı_University_logo.png" alt="Logo" width="100" height="auto">
+              </a>
+          
+              <ul class="nav col-md-4 justify-content-end">
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
+            
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
+                
+              </ul>
+            </footer>
+          </div>
+    </section>
+
+    <!--End Footer Section -->
 
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>

@@ -164,3 +164,28 @@
 .odd td {
   background-color: rgb(154, 0, 46, 0.125) !important;
 }
+
+
+/*header*/
+
+.font-black a {
+  color: black;
+}
+
+.btn-black {
+  background-color: #b03854;
+  color: white; 
+  border-color: #b03854; 
+}
+
+.btn-black:active {
+  background-color: #ad566a;
+  border-color: #ad566a;
+}
+
+.btn-black:hover {
+  background-color: #ad566a;
+  border-color: #ad566a;
+}
+
+/*header*/
