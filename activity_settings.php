@@ -197,10 +197,88 @@ if ($result->num_rows > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings Page</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin-top: 20px;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        form {
+            width: 80%;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
 </head>
 
 <body>
-
 
     <h2>Akademik Faaliyetler</h2>
     <form action="" method="post">
@@ -223,7 +301,6 @@ if ($result->num_rows > 0) {
                         <td>
                             <input type="text" name="activity_id[<?php echo $activity['id']; ?>]"
                                 value="<?php echo $activity['activity_id']; ?>" required>
-
                         </td>
                         <td>
                             <textarea name="description[<?php echo $activity['id']; ?>]"
@@ -238,23 +315,20 @@ if ($result->num_rows > 0) {
                 <?php endforeach; ?>
             </tbody>
         </table>
-
     </form>
-    <form action="" method="post">
 
-        <h2>Add New Activity</h2>
+    <form action="" method="post">
+        <h2>Yeni Faaliyet Ekle</h2>
         <div>
             <label for="new_academic_activity_type">Yeni Akademik Faaliyet Türü:</label>
             <input type="text" name="new_academic_activity_type" required>
             <label for="new_activity_id">Yeni Faaliyet Id:</label>
             <input type="text" name="new_activity_id" required>
-
             <label for="new_description">Yeni Faaliyet:</label>
             <textarea name="new_description" required></textarea>
         </div>
         <button type="submit" name="add_activity">Faaliyet Ekle</button>
     </form>
-
 
 </body>
 

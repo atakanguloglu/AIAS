@@ -19,7 +19,7 @@ $userInfo = "";
 if ($result->num_rows == 1) {
     $user = $result->fetch_assoc();
     // Display current user information
-    $userInfo = "Hoş geldiniz, " . $user['phone'] . " <a href='signout.php'>Çıkış Yap</a>";
+    $userInfo = "Hoş geldiniz, " . $user['phone'];
 }
 
 // Fetch data from the database
@@ -76,6 +76,44 @@ $conn->close();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="css/main.css">
+
+    <style>     
+        body {
+            margin: 20px;
+        }
+
+        .container {
+            padding-right: 15px;
+            padding-left: 15px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .navbar {
+            margin-bottom: 20px;
+        }
+
+        .responseDiv {
+            margin-bottom: 20px;
+        }
+
+        .text-end {
+            margin-bottom: 20px;
+            text-align: right; 
+        }
+
+        table {
+            margin-top: 20px;
+            margin-bottom: 20px;       
+        }
+        
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+    </style>
 </head>
 
 <body>
@@ -94,12 +132,15 @@ $conn->close();
                 </div>
             </div>
             <div class="col-md-6">
-    <div class="text-end">
-        <a href="settings.php" class="btn btn-primary">Ayarlar</a>
-        <a href="signup.php" class="btn btn-success">Kullanıcı Kaydı</a> <!-- Yeni buton -->
-    </div>
-</div>
+                <div class="text-end">
+                    <a href="settings.php" class="btn btn-primary">Ayarlar</a>
+                    <a href="signup.php" class="btn btn-success">Kullanıcı Kaydı</a>                  
+                </div>
             </div>
+        </div>
+
+        <div class="logout-btn">
+            <a href="signout.php" class="btn btn-danger">Çıkış Yap</a>
         </div>
 
         <div class="row">

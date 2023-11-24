@@ -28,8 +28,6 @@ if ($tableResult->num_rows == 0) {
     } else {
         echo "Error creating table: " . $conn->error;
     }
-} else {
-    echo "Table katsayı already exists.";
 }
 
 // Fetch coefficient values from the database
@@ -60,30 +58,95 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <head>
     <title>Coefficient Settings</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 50%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Coefficient Settings</h1>
-    <form method="post">
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Coefficient Value</th>
-            </tr>
-            <?php foreach ($coefficients as $coefficient): ?>
-                <tr>
-                    <td>
-                        <?php echo $coefficient['id']; ?>
-                    </td>
-                    <td>
-                        <input type="number" step="0.01" name="coefficients[<?php echo $coefficient['id']; ?>]"
-                            value="<?php echo $coefficient['value']; ?>">
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </table>
-        <button type="submit">Save Changes</button>
-    </form>
+    <div>
+        <h1>Coefficient Settings</h1>
+        <form method="post">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Coefficient Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($coefficients as $coefficient): ?>
+                        <tr>
+                            <td><?php echo $coefficient['id']; ?></td>
+                            <td>
+                                <input type="number" step="0.01" name="coefficients[<?php echo $coefficient['id']; ?>]"
+                                    value="<?php echo $coefficient['value']; ?>">
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
 </body>
 
 </html>
