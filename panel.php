@@ -67,7 +67,6 @@ $result = $conn->query($sql);
         </div>
         <div class="text-end">
             <a href="settings.php" class="btn btn-primary">Ayarlar</a>
-            <a href="signup.php" class="btn btn-success">Kullanıcı Kaydı</a> <!-- Yeni buton -->
         </div>
     </nav>
     <div class="container">

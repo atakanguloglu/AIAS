@@ -42,7 +42,7 @@ if ($result->num_rows > 0) {
             </tr>
         </thead>
         <tbody>";
-    
+
     // Output data of each row
     while ($row = $result->fetch_assoc()) {
         $dataTable .= "<tr>
@@ -77,7 +77,7 @@ $conn->close();
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="css/main.css">
 
-    <style>     
+    <style>
         body {
             margin: 20px;
         }
@@ -99,20 +99,19 @@ $conn->close();
 
         .text-end {
             margin-bottom: 20px;
-            text-align: right; 
+            text-align: right;
         }
 
         table {
             margin-top: 20px;
-            margin-bottom: 20px;       
+            margin-bottom: 20px;
         }
-        
+
         .logout-btn {
             position: absolute;
             top: 20px;
             right: 20px;
         }
-
     </style>
 </head>
 
@@ -134,7 +133,6 @@ $conn->close();
             <div class="col-md-6">
                 <div class="text-end">
                     <a href="settings.php" class="btn btn-primary">Ayarlar</a>
-                    <a href="signup.php" class="btn btn-success">Kullanıcı Kaydı</a>                  
                 </div>
             </div>
         </div>
