@@ -22,7 +22,8 @@ if ($tableExists->num_rows === 0) {
         id INT AUTO_INCREMENT PRIMARY KEY,
         academic_activity_type VARCHAR(100) NOT NULL, 
         activity_id VARCHAR(50) NOT NULL,
-        description TEXT NOT NULL
+        description TEXT NOT NULL,
+        point DECIMAL(10,2)
     )";
 
     if ($conn->query($createTableQuery) === TRUE) {
@@ -30,97 +31,115 @@ if ($tableExists->num_rows === 0) {
         $activities = [
 
             'Yayın' => [
-                ['1.1.a', 'WoS Quartile Q1'],
-                ['1.1.b', 'WoS Quartile Q2'],
-                ['1.1.c', 'WoS Quartile Q3'],
-                ['1.1.d', 'WoS Quartile Q4'],
-                ['1.2.a', 'SCOPUS Quartile Q1'],
-                ['1.2.b', 'SCOPUS Quartile Q2'],
-                ['1.2.c', 'SCOPUS Quartile Q3'],
-                ['1.2.d', 'SCOPUS Quartile Q4'],
+                ['1.1.a', 'WoS Quartile Q1', 125],
+                ['1.1.b', 'WoS Quartile Q2', 100],
+                ['1.1.c', 'WoS Quartile Q3', 85],
+                ['1.1.d', 'WoS Quartile Q4', 65],
+                ['1.2.a', 'SCOPUS Quartile Q1', 65],
+                ['1.2.b', 'SCOPUS Quartile Q2', 60],
+                ['1.2.c', 'SCOPUS Quartile Q3', 55],
+                ['1.2.d', 'SCOPUS Quartile Q4', 50],
                 [
                     '1.3.a',
                     'WoS tarafından taranan ESCI, ESSCI vb. gibi dergilerde yayımlanmış araştırma makalesi',
+                    50
                 ],
                 [
                     '1.4.a',
                     'WoS ve SCOPUS tarafından taranan konferans (sempozyum) kitaplarında yayımlanmış araştırma makalesi',
+                    40
                 ],
                 [
                     '1.5.a',
                     'Diğer uluslararası hakemli dergilerde yayımlanmış araştırma makalesi',
+                    30
                 ],
                 [
                     '1.6.a',
                     'ULAKBİM TR Dizin tarafından taranan ulusal hakemli dergilerde yayımlanmış araştırma makalesi',
+                    20
                 ],
                 [
                     '1.7.a',
                     'Tanınmış uluslararası yayınevleri tarafından yayımlanmış özgün bilimsel kitap',
+
+                    40
                 ],
                 [
                     '1.8.a',
                     'Tanınmış uluslararası yayınevleri tarafından yayımlanmış özgün bilimsel kitaplarda bölüm yazarlığı',
+                    10
                 ],
                 [
                     '1.9.a',
                     'Tanınmış ulusal yayınevleri tarafından yayımlanmış özgün bilimsel kitap',
+                    20
                 ],
                 [
                     '1.10.a',
                     'Tanınmış ulusal yayınevleri tarafından yayımlanmış özgün bilimsel kitaplarda bölüm',
+                    10
                 ],
             ],
             'Tasarım' => [
                 [
                     '2.1.a',
                     'Endüstriyel, çevresel veya grafiksel tasarım; sahne, moda veya çalgı tasarımı',
+                    20
                 ],
             ],
             'Sergi' => [
-                ['3.1.a', 'Özgün yurtdışı bireysel etkinlik'],
-                ['3.2.a', 'Özgün yurtiçi bireysel etkinlik'],
-                ['3.3.a', 'Özgün yurtdışı grup/karma/toplu etkinlik'],
-                ['3.4.a', 'Özgün yurtiçi grup/karma/toplu etkinlik'],
+                ['3.1.a', 'Özgün yurtdışı bireysel etkinlik', 40],
+                ['3.2.a', 'Özgün yurtiçi bireysel etkinlik', 20],
+                ['3.3.a', 'Özgün yurtdışı grup/karma/toplu etkinlik', 20],
+                ['3.4.a', 'Özgün yurtiçi grup/karma/toplu etkinlik', 15],
             ],
             'Patent' => [
-                ['4.1.a', 'Uluslararası patent'],
-                ['4.2.a', 'Ulusal patent'],
-                ['4.3.a', 'Uluslararası Faydalı Model'],
-                ['4.4.a', 'Ulusal Faydalı Model'],
+                ['4.1.a', 'Uluslararası patent', 120],
+                ['4.2.a', 'Ulusal patent', 100],
+                ['4.3.a', 'Uluslararası Faydalı Model', 80],
+                ['4.4.a', 'Ulusal Faydalı Model', 60],
             ],
             'Atıf' => [
                 [
                     '5.1.a',
                     'SCI, SCI-Expanded, SSCI ve AHCI kapsamındaki dergilerde yayımlanmış makalelerde atıf',
+                    1
                 ],
                 [
                     '5.2.a',
                     'Alan endeksleri (varsa) kapsamındaki dergilerde yayımlanmış makalelerde atıf',
+                    0.75
                 ],
                 [
                     '5.3.a',
                     'Diğer uluslararası hakemli dergilerde yayımlanmış makalelerde atı',
+                    0.5
                 ],
                 [
                     '5.4.a',
                     'ULAKBİM tarafından taranan ulusal hakemli dergilerde yayımlanmış makalelerde atıf',
+                    0.25
                 ],
                 [
                     '5.5.a',
                     'Tanınmış uluslararası yayınevleri tarafından yayımlanmış özgün bilimsel kitapta atıf',
+                    1
                 ],
                 [
                     '5.6.a',
                     'Tanınmış ulusal yayınevleri tarafından yayımlanmış özgün bilimsel kitapta atıf',
+                    0.75
                 ],
                 [
                     '5.7.a',
                     'Güzel sanatlardaki eserlerin uluslararası kaynak veya yayın organlarında yer alması veya gösterime ya da dinletime girmesi',
+                    0.5
                 ],
                 [
                     '5.8.a',
                     'Güzel sanatlardaki eserlerin ulusal kaynak veya yayın organlarında yer alması veya gösterime ya da dinletime girmesi',
+                    0.25
                 ],
             ],
 
@@ -130,8 +149,8 @@ if ($tableExists->num_rows === 0) {
             foreach ($activityList as $activity) {
                 $activityId = $activity[0];
                 $description = $activity[1];
-
-                $insertQuery = "INSERT INTO activities (academic_activity_type, activity_id, description) VALUES ('$academic_activity_type','$activityId', '$description')";
+                $point = $activity[2];
+                $insertQuery = "INSERT INTO activities (academic_activity_type, activity_id, description, point) VALUES ('$academic_activity_type','$activityId', '$description', '$point')";
                 $conn->query($insertQuery);
             }
         }
@@ -154,8 +173,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $id = intval($id);
             $description = $_POST["description"][$id];
             $academic_activity_type = $_POST["academic_activity_type"][$id];
+            $point = $_POST["point"][$id];
             // Update the activity in the database
-            $updateQuery = "UPDATE activities SET activity_id = '$activity_id', description = '$description', academic_activity_type = '$academic_activity_type' WHERE id = $id";
+            $updateQuery = "UPDATE activities SET activity_id = '$activity_id', description = '$description', academic_activity_type = '$academic_activity_type', point = '$point' WHERE id = $id";
             $conn->query($updateQuery);
         }
 
@@ -167,9 +187,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $newActivityId = $_POST["new_activity_id"];
         $newDescription = $_POST["new_description"];
+        $newPoint = $_POST["new_point"];
         $newAcademicActivityType = $_POST["new_academic_activity_type"];
         // Insert the new activity into the database
-        $insertQuery = "INSERT INTO activities (academic_activity_type, activity_id, description) VALUES ('$newAcademicActivityType','$newActivityId', '$newDescription')";
+        $insertQuery = "INSERT INTO activities (academic_activity_type, activity_id, description, point) VALUES ('$newAcademicActivityType','$newActivityId', '$newDescription', '$newPoint')";
         $conn->query($insertQuery);
 
         // Redirect to the settings page or perform other actions
@@ -197,7 +218,6 @@ if ($result->num_rows > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings Page</title>
-
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -209,7 +229,6 @@ if ($result->num_rows > 0) {
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            height: 100vh;
         }
 
         h2 {
@@ -227,7 +246,8 @@ if ($result->num_rows > 0) {
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        th, td {
+        th,
+        td {
             padding: 15px;
             text-align: left;
             border-bottom: 1px solid #ddd;
@@ -238,7 +258,8 @@ if ($result->num_rows > 0) {
             color: #fff;
         }
 
-        input, textarea {
+        input,
+        textarea {
             width: 100%;
             padding: 8px;
             box-sizing: border-box;
@@ -264,7 +285,6 @@ if ($result->num_rows > 0) {
         }
 
         form {
-            width: 80%;
             margin: 20px auto;
             display: flex;
             flex-direction: column;
@@ -276,9 +296,9 @@ if ($result->num_rows > 0) {
         }
     </style>
 </head>
-</head>
 
-<body>
+<body class="container">
+
 
     <h2>Akademik Faaliyetler</h2>
     <form action="" method="post">
@@ -288,6 +308,7 @@ if ($result->num_rows > 0) {
                     <th>Akademik Faaliyet Türü</th>
                     <th>Faaliyet Id</th>
                     <th>Faaliyet</th>
+                    <th>Değer</th>
                     <th></th>
                 </tr>
             </thead>
@@ -301,10 +322,15 @@ if ($result->num_rows > 0) {
                         <td>
                             <input type="text" name="activity_id[<?php echo $activity['id']; ?>]"
                                 value="<?php echo $activity['activity_id']; ?>" required>
+
                         </td>
                         <td>
                             <textarea name="description[<?php echo $activity['id']; ?>]"
                                 required><?php echo $activity['description']; ?></textarea>
+                        </td>
+                        <td>
+                            <textarea name="point[<?php echo $activity['id']; ?>]"
+                                required><?php echo $activity['point']; ?></textarea>
                         </td>
                         <td>
                             <button type="submit" name="update_activity[<?php echo $activity['id']; ?>]">
@@ -315,20 +341,25 @@ if ($result->num_rows > 0) {
                 <?php endforeach; ?>
             </tbody>
         </table>
-    </form>
 
+    </form>
     <form action="" method="post">
+
         <h2>Yeni Faaliyet Ekle</h2>
         <div>
             <label for="new_academic_activity_type">Yeni Akademik Faaliyet Türü:</label>
             <input type="text" name="new_academic_activity_type" required>
             <label for="new_activity_id">Yeni Faaliyet Id:</label>
             <input type="text" name="new_activity_id" required>
-            <label for="new_description">Yeni Faaliyet:</label>
+
+            <label for="new_description">Yeni Faaliyet Adı:</label>
             <textarea name="new_description" required></textarea>
+            <label for="new_point">Yeni Faaliyet Değeri:</label>
+            <input type="text" name="new_point" required>
         </div>
         <button type="submit" name="add_activity">Faaliyet Ekle</button>
     </form>
+
 
 </body>
 
