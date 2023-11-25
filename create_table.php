@@ -174,7 +174,8 @@ function calculateIncentivePoint($academic_activity_type, $activity, $coefficien
     }
 }
 
-
+// Start the session
+session_start();
 // Database connection details
 $servername = "localhost"; // Change this if your database is on a different server
 $username = "root"; // Replace with your MySQL username
@@ -212,6 +213,7 @@ if ($table_result->num_rows == 0) {
         persons DECIMAL(10,2),
         coefficient DECIMAL(10,2),
         incentive_point DECIMAL(10,2),
+        user_id INT(11),
         reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )";
 
@@ -226,34 +228,40 @@ if ($table_result->num_rows == 0) {
 
 // Insert data from POST request into the table
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // session_start();
+    if (isset($_SESSION['user_id'])) {
+        $userId = $_SESSION['user_id'];
+        // $userId = $_SESSION['user_id'];
+        $name = $_POST["name"];
+        $surname = $_POST["surname"];
+        $email = $_POST["email"];
+        $title = $_POST["title"];
+        $faculty = $_POST["faculty"];
+        $department = $_POST["department"];
+        $basic_field = $_POST["basic_field"];
+        $scientific_field = $_POST["scientific_field"];
+        $academic_activity_type = $_POST["academic_activity_type"];
+        $activity = $_POST["activity"];
+        $work_name = $_POST["work_name"];
+        $persons = $_POST["persons"];
 
-    $name = $_POST["name"];
-    $surname = $_POST["surname"];
-    $email = $_POST["email"];
-    $title = $_POST["title"];
-    $faculty = $_POST["faculty"];
-    $department = $_POST["department"];
-    $basic_field = $_POST["basic_field"];
-    $scientific_field = $_POST["scientific_field"];
-    $academic_activity_type = $_POST["academic_activity_type"];
-    $activity = $_POST["activity"];
-    $work_name = $_POST["work_name"];
-    $persons = $_POST["persons"];
+        // Katsayısının hesaplanması
+        $coefficient = calculateCofficient($persons);
 
-    // Katsayısının hesaplanması
-    $coefficient = calculateCofficient($persons);
+        // Teşvik puanı hesaplama
+        $incentive_point = calculateIncentivePoint($academic_activity_type, $activity, $coefficient);
 
-    // Teşvik puanı hesaplama
-    $incentive_point = calculateIncentivePoint($academic_activity_type, $activity, $coefficient);
+        // SQL query to insert data into the table
+        $insert_query = "INSERT INTO $table_name (name, surname, email, title, faculty, department, basic_field, scientific_field, academic_activity_type, activity, work_name, persons, coefficient, user_id, incentive_point ) VALUES ('$name', '$surname', '$email', '$title', '$faculty', '$department', '$basic_field', '$scientific_field', '$academic_activity_type', '$activity', '$work_name', '$persons', '$coefficient', '$userId', '$incentive_point')";
 
-    // SQL query to insert data into the table
-    $insert_query = "INSERT INTO $table_name (name, surname, email, title, faculty, department, basic_field, scientific_field, academic_activity_type, activity, work_name, persons, coefficient, incentive_point ) VALUES ('$name', '$surname', '$email', '$title', '$faculty', '$department', '$basic_field', '$scientific_field', '$academic_activity_type', '$activity', '$work_name', '$persons', '$coefficient', '$incentive_point')";
-
-    if ($conn->query($insert_query) === TRUE) {
-        // echo "Data inserted successfully";
-        header("Location: panel.php");
+        if ($conn->query($insert_query) === TRUE) {
+            // echo "Data inserted successfully";
+            header("Location: user_panel.php");
+        } else {
+            echo "Error inserting data: " . $conn->error;
+        }
     } else {
-        echo "Error inserting data: " . $conn->error;
+        echo "User ID not found in session.";
     }
 }
 

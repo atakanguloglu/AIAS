@@ -21,11 +21,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $id = $_POST['id'];
         $name = $_POST['name']; // Replace 'name' with the actual field name
         // Add more fields as necessary
-
         // Prepare and execute SQL to update row with the specified ID
         $sql = "UPDATE tesvik SET name = '$name' WHERE id = $id"; // Replace 'tesvik' and 'name' with your actual table and field names
         if ($conn->query($sql) === TRUE) {
-            print "$name";
             echo "Row updated successfully";
         } else {
             echo "Error updating row: " . $conn->error;

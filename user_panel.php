@@ -1,29 +1,15 @@
 <?php
+// Start the session
 session_start();
 
 // Check if the user is logged in
-if (isset($_SESSION['user_id'])) {
-    require_once "db_connection.php";
-
-    // Retrieve user details based on user_id stored in the session
-    $userId = $_SESSION['user_id'];
-    $sql = "SELECT * FROM users WHERE id = '$userId'";
-    $result = $conn->query($sql);
-    $user = null;
-    if ($result->num_rows == 1) {
-        $user = $result->fetch_assoc();
-        // Display current user information
-        echo "<div class='container d-flex justify-content-between'>" . "Welcome, " . $user['phone'] . "</div>";  // Display whatever user information you want
-    }
-} else {
-    // If user is not logged in, you can redirect to the signin page or perform other actions
+if (!isset($_SESSION['user_id'])) {
     header("Location: signin.php");
     exit();
 }
-?>
-<?php
+
 // Database connection details
-$servername = "localhost"; // Replace with your server name if different
+$servername = "localhost"; // Change this if your database is on a different server
 $username = "root"; // Replace with your MySQL username
 $password = ""; // Replace with your MySQL password
 $dbname = "aias"; // Replace with your database name
@@ -36,11 +22,19 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Fetch data from the database
-$sql = "SELECT * FROM tesvik"; // Replace 'your_table' with your actual table name
+// Retrieve user ID from session
+$userId = $_SESSION['user_id'];
+
+// Query forms associated with the user ID
+$sql = "SELECT * FROM tesvik WHERE user_id = '$userId'";
 $result = $conn->query($sql);
 
+// Close the database connection
+$conn->close();
 ?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -64,13 +58,9 @@ $result = $conn->query($sql);
             <div class="navbar-header">
                 <img src="img/logo-kucuk.png" width="140">
             </div>
-            <div>
-
-            </div>
         </div>
         <div class="text-end">
             <a href="index.php" class="btn btn-warning">Yeni Başvuru</a>
-            <a href="settings.php" class="btn btn-primary">Ayarlar</a>
             <a href='signout.php' class='btn btn-danger'>Çıkış Yap</a>
         </div>
     </nav>
@@ -91,7 +81,7 @@ $result = $conn->query($sql);
                 <th>Faaliyet</th>
                 <th>Kişi</th>
                 <th>Teşvik Puanı</th>
-        
+                
                 <!-- Add more columns based on your table structure -->
             </tr>
         </thead>";
@@ -120,8 +110,9 @@ $result = $conn->query($sql);
 
 
 
-    </div>
 
+    </div>
+    <!-- ... (Your existing HTML code) ... -->
 
     <!-- Modal for updating/deleting -->
     <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
@@ -146,7 +137,7 @@ $result = $conn->query($sql);
 
                         <!-- Buttons to update or delete -->
                         <div class="mt-3">
-                            <button type="submit" class="btn btn-primary" id="updateBtn">Update</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
                             <button type="button" class="btn btn-danger" id="deleteBtn">Delete</button>
                         </div>
                     </form>
@@ -164,24 +155,12 @@ $result = $conn->query($sql);
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
     <script src="js/panel.js"></script>
     <script>
-        // $(document).ready(function () {
-        //     $.ajax({
-        //         url: 'fetch_table.php', // Replace with the script that fetches the table content
-        //         method: 'GET', // Assuming the fetch_table.php returns the HTML table content
-        //         success: function (data) {
-        //             $('#example').html(data); // Update the table content
-        //             $('#updateModal').modal('hide'); // Hide the modal
-        //         },
-        //         error: function (xhr, status, error) {
-        //             console.error(error);
-        //         }
-        //     });
-        // })
+
 
         $('#example tbody').on('click', 'tr', function () {
             // Get the data from the clicked row
             var rowData = $('#example').DataTable().row(this).data();
-            // console.log(rowData);
+            console.log(rowData);
             if (rowData) {
                 // Populate modal with row data
                 $('#rowId').val(rowData[0]);
@@ -207,20 +186,8 @@ $result = $conn->query($sql);
                 data: { id: rowId },
                 success: function (response) {
                     // Refresh the page or update the table after deletion
-                    // $('#example').html(response); // Update the table content
-                    // $('#updateModal').modal('hide');
+                    $('#updateModal').modal('hide');
                     // location.reload(); // Reload the page for simplicity, you can update the table via AJAX too
-                    $.ajax({
-                        url: 'fetch_table.php', // Replace with the script that fetches the table content
-                        method: 'GET', // Assuming the fetch_table.php returns the HTML table content
-                        success: function (data) {
-                            $('#example').html(data); // Update the table content
-                            $('#updateModal').modal('hide'); // Hide the modal
-                        },
-                        error: function (xhr, status, error) {
-                            console.error(error);
-                        }
-                    });
                 }, error: function (xhr, status, error) {
                     console.error(error);
                 },
@@ -228,17 +195,15 @@ $result = $conn->query($sql);
         });
 
         // Function to handle form submission for updating data
-        $('#updateBtn').on('click', function (event) {
-            var rowId = $('#rowId').val();
-            rowName = $("#name").val();
+        $('#updateForm').on('submit', function (event) {
+            event.preventDefault();
+            var formData = $(this).serialize(); // Get form data
 
-            // var formData = $(this).serialize(); // Get form data
-            // console.log(formData);
             // Send AJAX request to update the row
             $.ajax({
                 url: 'update_row.php', // Replace with your PHP script to handle update
                 method: 'POST',
-                data: { id: rowId, name: rowName },
+                data: formData,
                 success: function (response) {
                     // Handle success (e.g., close modal, refresh table)
                     $('#updateModal').modal('hide'); // Hide the modal after update

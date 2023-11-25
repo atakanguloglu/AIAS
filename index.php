@@ -1,3 +1,26 @@
+<?php
+session_start();
+
+// Check if the user is logged in
+if (isset($_SESSION['user_id'])) {
+    require_once "db_connection.php";
+
+    // Retrieve user details based on user_id stored in the session
+    $userId = $_SESSION['user_id'];
+    $sql = "SELECT * FROM users WHERE id = '$userId'";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows == 1) {
+        $user = $result->fetch_assoc();
+        // Display current user information
+        echo "Welcome, " . $user['phone'];  // Display whatever user information you want
+    }
+} else {
+    // If user is not logged in, you can redirect to the signin page or perform other actions
+    header("Location: signin.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="tr">
 
@@ -29,17 +52,20 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            z-index: 1000; /* Diğer öğelerin üzerine çıkması için z-index değeri */
+            z-index: 1000;
+            /* Diğer öğelerin üzerine çıkması için z-index değeri */
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 
 <body class="bg-light p-4" data-new-gr-c-s-check-loaded="14.1137.0" data-gr-ext-installed="">
-<a href="signin.php" class="btn btn-primary login-btn">Giriş Yap</a>
+    <div class="container text-end">
 
-    <div class="responseDiv"></div>
-    
+        <a href="panel.php" class="btn btn-primary">Panel</a>
+        <a href='signout.php' class="btn btn-danger">Sign Out</a>
+
+    </div>
     <form id="applicationForm" action="create_table.php" method="POST" class="mb-4">
         <div class="row g-0">
             <div class="col-lg-5 m-auto">

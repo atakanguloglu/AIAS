@@ -45,9 +45,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['signup'])) {
     <meta http-equiv="Content-Language" content="tr">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Akademik Teşvik - Yetkili Kayıt</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/main.css?v=17">
 
@@ -62,12 +64,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['signup'])) {
         }
     </style>
 
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 
 <body class="p-4 bg-light">
     <!-- Görsel arayüzünüzü buraya ekleyebilirsiniz -->
-    <div class="d-none loader d-flex align-items-center justify-content-center position-fixed w-100 h-100" style="top:0; left:0; z-index:66">
+    <div class="d-none loader d-flex align-items-center justify-content-center position-fixed w-100 h-100"
+        style="top:0; left:0; z-index:66">
         <div class="line-scale-pulse-out">
             <div class="bg-white"></div>
             <div class="bg-white"></div>
@@ -105,19 +108,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['signup'])) {
 
                 <div class="row mt-3">
                     <div class="col-6 text-start d-flex align-items-center">
-                       
+
                     </div>
                     <div class="col-6 text-end">
                         <button type="submit" class="btn btn-info-2 fw-semibold" name="signup">Kaydet</button>
                     </div>
                 </div>
-                
+
                 <?php if (!empty($errorMessage)): ?>
                     <div class="error-message mt-3">
                         <?php echo $errorMessage; ?>
                     </div>
                 <?php endif; ?>
             </form>
+            <div>
+                <a href="signin.php"><button class="btn btn-primary">Kullanıcı Girişi</button> </a>
+            </div>
         </div>
 
         <div class="text-center text-black opacity-8 mt-3">Copyright © İstanbul Nişantaşı Üniversitesi 2023</div>

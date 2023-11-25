@@ -1,3 +1,26 @@
+<?php
+session_start();
+
+// Check if the user is logged in
+if (isset($_SESSION['user_id'])) {
+    require_once "db_connection.php";
+
+    // Retrieve user details based on user_id stored in the session
+    $userId = $_SESSION['user_id'];
+    $sql = "SELECT * FROM users WHERE id = '$userId'";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows == 1) {
+        $user = $result->fetch_assoc();
+        // Display current user information
+        echo "Welcome, " . $user['phone'] . "<a href='signout.php'>Sign Out</a>";  // Display whatever user information you want
+    }
+} else {
+    // If user is not logged in, you can redirect to the signin page or perform other actions
+    header("Location: signin.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="tr">
 
@@ -23,7 +46,7 @@
 
         a {
             display: inline-block;
-            margin-bottom: 10px; 
+            margin-bottom: 10px;
             padding: 15px 25px;
             text-decoration: none;
             color: #fff;
